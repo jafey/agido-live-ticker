@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
-import "./globals.css";
+"use client"
 
-export const metadata: Metadata = {
-  title: "Agido Live Ticker",
-  description: "Agido Live Ticker App",
-};
+import "./globals.css";
+import { Provider } from "react-redux";
+import store from "@/app/store/store";
 
 export default function RootLayout({
                                      children,
@@ -12,10 +10,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de">
-    <body>
-    {children}
-    </body>
-    </html>
+    <Provider store={store}>
+      <html lang="de">
+      <body>
+      {children}
+      </body>
+      </html>
+    </Provider>
   );
 }

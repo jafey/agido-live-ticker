@@ -3,6 +3,7 @@
 import { SignalIcon } from "@heroicons/react/24/solid";
 import LiveTicker from "@/app/components/LiveTicker";
 import React, { useEffect, useState } from "react";
+import LiveTickerUpdateSimulator from "@/app/components/LiveTickerUpdateSimulator";
 
 export default function Home() {
 
@@ -12,6 +13,14 @@ export default function Home() {
     setInterval(() => setNow(new Date()), 1000)
   }, []);
 
+  const formattedNow = now.toLocaleDateString("de-de", {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
     <div>
       <header className="bordered">
@@ -20,7 +29,7 @@ export default function Home() {
             <div className="flex gap-2">
               <SignalIcon className="size-8"/> <h1> Agido Live Ticker</h1>
             </div>
-            <div className="w-[160px] ml-10">{now.toLocaleString("de-de")}</div>
+            <div className="w-[160px] ml-10">{formattedNow}</div>
           </div>
         </div>
       </header>
@@ -58,6 +67,14 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <div className="bordered">
+        <div className="container mx-auto my-2">
+          <div className="mx-4">
+            <h1>Live Ticker Update simulieren</h1>
+            <LiveTickerUpdateSimulator/>
+          </div>
+        </div>
+      </div>
       <footer>
         <div className="text-xs my-2 flex justify-center">Made with ♡ by Jannis Fey</div>
       </footer>

@@ -1,0 +1,19 @@
+.horizontal-ticker {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.ticker-track {
+  display: flex;
+}
+
+.ticker-item {
+  padding-right: 50px;
+  white-space: nowrap;
+
+  @media (max-width: 425px) {
+    font-size: 0.75rem;
+  }
+}
+

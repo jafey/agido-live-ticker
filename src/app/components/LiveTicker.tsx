@@ -1,35 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { formatLiveTickerMessage } from "@/app/helper/formatLiveTickerMessage";
+import styles from '@/app/styles/live-ticker.module.scss';
 import { useAppSelector } from "@/app/store/hooks";
 import { selectLiveTickerState } from "@/app/store/liveTickerSlice";
-import styles from '@/app/styles/live-ticker.module.scss';
+import { useLiveTickerMessage } from "@/app/hooks/useLiveTickerMessage";
 
 const LiveTicker = () => {
 
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [fade, setFade] = useState(true);
-
+  const interval = 5000;
   const liveTickerState = useAppSelector(selectLiveTickerState)
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useLiveTickerMessage();
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setFade(false);
-      setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % liveTickerState.length);
-        setFade(true);
-      }, 500); // Time for fade out
-    }, 5000); // Time for each event
-    return () => clearInterval(intervalId);
+    const tickerInterval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % liveTickerState.length);
+    }, interval);
+
+    return () => {
+      clearInterval(tickerInterval)
+    };
   }, [liveTickerState.length]);
 
-
   return (
-    <div>
-      <div className={styles.ticker}>
+    <div className={styles.ticker}>
+      {liveTickerState.map((item, index) => (
         <div
-          className={styles.tickerItem + " " + (fade ? styles.fadeIn : styles.fadeOut)}> {liveTickerState[currentIndex]} </div>
-      </div>
+          key={index}
+          className={styles.tickerItem + " " + (index === currentIndex ? styles.active : index === (currentIndex - 1 + liveTickerState.length) % liveTickerState.length ? styles.exiting : "")}
+        >
+          {formatLiveTickerMessage(item)}
+        </div>
+
+      ))}
     </div>
-  )
-}
+  );
+};
 
 export default LiveTicker;

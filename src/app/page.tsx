@@ -1,16 +1,28 @@
 "use client"
 
 import { SignalIcon } from "@heroicons/react/24/solid";
-import LiveTicker from "@/app/components/LiveTicker";
 import React, { useEffect, useState } from "react";
-import LiveTickerUpdateSimulator from "@/app/components/LiveTickerUpdateSimulator";
+import LiveTickerMessageSimulator from "@/app/components/LiveTickerMessageSimulator";
+import { socket } from "@/app/socket";
+import LiveTickerHorizontal from "@/app/components/LiveTickerHorizontal";
 
 export default function Home() {
 
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    setInterval(() => setNow(new Date()), 1000)
+    setInterval(() => setNow(new Date()), 1000);
+
+    function onConnect() {
+      console.log("connected");
+    }
+
+    socket.on('connect', onConnect);
+
+    return () => {
+      socket.disconnect();
+    }
+
   }, []);
 
   const formattedNow = now.toLocaleDateString("de-de", {
@@ -29,13 +41,15 @@ export default function Home() {
             <div className="flex gap-2">
               <SignalIcon className="size-8"/> <h1> Agido Live Ticker</h1>
             </div>
-            <div className="w-[160px] ml-10">{formattedNow}</div>
+            <div className="hidden sm:block ml-10 text-right">{formattedNow}</div>
           </div>
         </div>
       </header>
       <main className="bordered">
         <div className="container mx-auto my-2 ">
-          <LiveTicker/>
+          <div className="mx-4">
+            <LiveTickerHorizontal/>
+          </div>
         </div>
       </main>
       <main className="bordered">
@@ -71,7 +85,7 @@ export default function Home() {
         <div className="container mx-auto my-2">
           <div className="mx-4">
             <h1>Live Ticker Update simulieren</h1>
-            <LiveTickerUpdateSimulator/>
+            <LiveTickerMessageSimulator/>
           </div>
         </div>
       </div>

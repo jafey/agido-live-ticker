@@ -31,3 +31,7 @@ h1 {
 .bordered {
     border-bottom: 1px solid var(--border);
 }
+
+input, select {
+    color: #171717;
+}

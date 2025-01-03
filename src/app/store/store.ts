@@ -1,8 +1,7 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit'
-import { counterSlice } from "@/app/store/counterSlice";
 import { liveTickerSlice } from "@/app/store/liveTickerSlice";
 
-const rootReducer = combineSlices(counterSlice, liveTickerSlice);
+const rootReducer = combineSlices(liveTickerSlice);
 
 const store = configureStore({
   reducer: rootReducer
